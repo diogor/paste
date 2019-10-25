@@ -1,4 +1,5 @@
 from datetime import datetime
+from playhouse.db_url import connect
 from environs import Env
 import pydantic
 import peewee
@@ -6,8 +7,8 @@ import peewee
 
 env = Env()
 env.read_env()
-database = env.str("DATABASE")
-db = peewee.SqliteDatabase(database)
+database = env.str("DATABASE_URL")
+db = connect(database)
 
 
 class BaseModel(peewee.Model):
