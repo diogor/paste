@@ -35,8 +35,10 @@ def get_paste(id: int) -> Paste:
 
 
 def create_paste(paste: PasteRequestModel) -> Paste:
-    if not paste.title or not paste.text:
+    if not paste.text:
         raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Bad request.")
+    if not paste.title:
+        paste.title = paste.text[:30]
     paste_obj = Paste.create(
         title=paste.title,
         text=paste.text,
