@@ -63,7 +63,7 @@ async def index(id: int) -> PasteResponseModel:
 
 
 @app.get("/{id}/related")
-async def index(id: int) -> List[PasteResponseModel]:
+async def related(id: int) -> List[PasteResponseModel]:
     paste = get_paste(id)
     pastes: List[PasteResponseModel]
 
