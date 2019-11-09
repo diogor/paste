@@ -12,7 +12,6 @@ fastapi = "*"
 email-validator = "*"
 environs = "*"
 peewee = "*"
-pygments = "*"
 psycopg2 = "*"
 
 [requires]

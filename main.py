@@ -1,7 +1,4 @@
 from typing import List
-from pygments import highlight
-from pygments.lexers import guess_lexer
-from pygments.formatters import HtmlFormatter
 from fastapi import FastAPI, HTTPException
 from starlette.status import (HTTP_201_CREATED, HTTP_400_BAD_REQUEST,
                               HTTP_404_NOT_FOUND)
@@ -50,11 +47,10 @@ def create_paste(paste: PasteRequestModel) -> Paste:
 @app.get("/{id}")
 async def index(id: int) -> PasteResponseModel:
     paste = get_paste(id)
-    text = highlight(paste.text, guess_lexer(paste.text), HtmlFormatter())
     paste_data = {
         "id": paste.id,
         "title": paste.title,
-        "text": text,
+        "text": paste.text,
         "created_at": paste.created_at,
         "signature": paste.signature
     }
