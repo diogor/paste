@@ -56,25 +56,6 @@ async def index(slug: str) -> PasteResponseModel:
 
     return PasteResponseModel(**paste_data)
 
-
-@app.get("/{slug}/related")
-async def related(slug: str) -> List[PasteResponseModel]:
-    paste = get_paste(slug)
-    pastes: List[PasteResponseModel]
-
-    if paste.signature:
-        entries = (
-            Paste.select()
-            .where(Paste.signature == paste.signature, Paste.id != paste.id)
-            .order_by(Paste.created_at.desc())
-            .dicts()
-        )
-        pastes = [PasteResponseModel(**paste) for paste in entries]
-        return pastes
-
-    return []
-
-
 @app.post("/", status_code=HTTP_201_CREATED)
 async def create(paste: PasteRequestModel) -> PasteResponseModel:
     paste_obj = create_paste(paste)
