@@ -1,6 +1,7 @@
 from slugify import slugify
 from typing import List
 from fastapi import FastAPI, HTTPException
+from peewee import IntegrityError
 from starlette.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 from starlette.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
@@ -34,12 +35,15 @@ def create_paste(paste: PasteRequestModel) -> Paste:
         raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Bad request.")
     if not paste.title:
         paste.title = paste.text[:30]
-    paste_obj = Paste.create(
-        slug=slugify(paste.slug),
-        title=paste.title,
-        text=paste.text,
-        signature=paste.signature,
-    )
+    try:
+        paste_obj = Paste.create(
+            slug=slugify(paste.slug),
+            title=paste.title,
+            text=paste.text,
+            signature=paste.signature,
+        )
+    except IntegrityError:
+        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Duplicate slug.")
     return paste_obj
 
 
@@ -55,6 +59,7 @@ async def index(slug: str) -> PasteResponseModel:
     }
 
     return PasteResponseModel(**paste_data)
+
 
 @app.post("/", status_code=HTTP_201_CREATED)
 async def create(paste: PasteRequestModel) -> PasteResponseModel:
