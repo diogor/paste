@@ -17,7 +17,7 @@ class BaseModel(peewee.Model):
 
 
 class Paste(BaseModel):
-    slug = peewee.CharField()
+    slug = peewee.CharField(unique=True)
     title = peewee.CharField()
     text = peewee.TextField()
     created_at = peewee.DateTimeField(default=datetime.now)
