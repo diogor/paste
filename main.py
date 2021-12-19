@@ -34,7 +34,7 @@ def create_paste(paste: PasteRequestModel) -> Paste:
     if not paste.text or not paste.slug:
         raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Bad request.")
     if not paste.title:
-        paste.title = paste.text[:30]
+        paste.title = paste.slug
     try:
         paste_obj = Paste.create(
             slug=slugify(paste.slug),
