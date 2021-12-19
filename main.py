@@ -1,11 +1,9 @@
 from slugify import slugify
-from typing import List
 from fastapi import FastAPI, HTTPException
-from peewee import IntegrityError, Database as db
+from peewee import IntegrityError
 from starlette.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
-from starlette.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
-from models import PasteRequestModel, PasteResponseModel, Paste
+from models import PasteRequestModel, PasteResponseModel, Paste, db
 
 app = FastAPI()
 
