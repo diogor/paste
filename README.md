@@ -5,9 +5,9 @@
 # Instalação
 ## Dependências:
 ```bash
-pipenv install
+poetry install
 ```
 ## Banco:
 ```bash
-pipenv run python models.py
+poetry run python models.py
 ```
